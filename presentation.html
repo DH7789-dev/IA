@@ -1,0 +1,676 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Présentation IA</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            overflow: hidden;
+        }
+
+        .presentation {
+            width: 100vw;
+            height: 100vh;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+
+        .slide {
+            width: 90%;
+            max-width: 1200px;
+            height: 85vh;
+            background: white;
+            border-radius: 20px;
+            box-shadow: 0 20px 60px rgba(0,0,0,0.3);
+            padding: 60px;
+            display: none;
+            flex-direction: column;
+            position: relative;
+            overflow-y: auto;
+        }
+
+        .slide.active {
+            display: flex;
+            animation: slideIn 0.5s ease;
+        }
+
+        @keyframes slideIn {
+            from {
+                opacity: 0;
+                transform: translateX(50px);
+            }
+            to {
+                opacity: 1;
+                transform: translateX(0);
+            }
+        }
+
+        .slide-header {
+            border-bottom: 4px solid #667eea;
+            padding-bottom: 20px;
+            margin-bottom: 30px;
+        }
+
+        h1 {
+            color: #667eea;
+            font-size: 3em;
+            margin-bottom: 10px;
+        }
+
+        h2 {
+            color: #764ba2;
+            font-size: 2.5em;
+            margin-bottom: 20px;
+        }
+
+        h3 {
+            color: #667eea;
+            font-size: 1.8em;
+            margin: 25px 0 15px 0;
+        }
+
+        p, li {
+            font-size: 1.2em;
+            line-height: 1.8;
+            color: #333;
+            margin-bottom: 15px;
+        }
+
+        ul {
+            margin-left: 30px;
+        }
+
+        li {
+            margin-bottom: 12px;
+        }
+
+        .highlight {
+            background: linear-gradient(120deg, #667eea 0%, #764ba2 100%);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            font-weight: bold;
+        }
+
+        .box {
+            background: #f8f9ff;
+            border-left: 5px solid #667eea;
+            padding: 20px;
+            margin: 20px 0;
+            border-radius: 10px;
+        }
+
+        .grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+            gap: 20px;
+            margin: 20px 0;
+        }
+
+        .card {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: white;
+            padding: 25px;
+            border-radius: 15px;
+            transition: transform 0.3s;
+        }
+
+        .card:hover {
+            transform: translateY(-5px);
+        }
+
+        .card h4 {
+            font-size: 1.4em;
+            margin-bottom: 10px;
+        }
+
+        .card p {
+            color: white;
+            font-size: 1em;
+        }
+
+        .navigation {
+            position: fixed;
+            bottom: 30px;
+            left: 50%;
+            transform: translateX(-50%);
+            display: flex;
+            gap: 15px;
+            z-index: 1000;
+        }
+
+        button {
+            background: white;
+            color: #667eea;
+            border: none;
+            padding: 15px 30px;
+            border-radius: 30px;
+            font-size: 1.1em;
+            cursor: pointer;
+            font-weight: bold;
+            box-shadow: 0 5px 15px rgba(0,0,0,0.2);
+            transition: all 0.3s;
+        }
+
+        button:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 7px 20px rgba(0,0,0,0.3);
+            background: #667eea;
+            color: white;
+        }
+
+        button:disabled {
+            opacity: 0.5;
+            cursor: not-allowed;
+        }
+
+        .slide-number {
+            position: absolute;
+            top: 20px;
+            right: 30px;
+            background: #667eea;
+            color: white;
+            padding: 10px 20px;
+            border-radius: 20px;
+            font-weight: bold;
+        }
+
+        .prompt-formula {
+            background: #fff9e6;
+            border: 3px solid #ffd700;
+            border-radius: 15px;
+            padding: 25px;
+            margin: 20px 0;
+        }
+
+        .prompt-formula h4 {
+            color: #ff8c00;
+            font-size: 1.5em;
+            margin-bottom: 15px;
+        }
+
+        .example-box {
+            background: #e8f5e9;
+            border-left: 5px solid #4caf50;
+            padding: 20px;
+            margin: 15px 0;
+            border-radius: 10px;
+        }
+
+        .bad-example {
+            background: #ffebee;
+            border-left: 5px solid #f44336;
+        }
+
+        .center-content {
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            text-align: center;
+            height: 100%;
+        }
+
+        .subtitle {
+            color: #764ba2;
+            font-size: 1.5em;
+            margin-top: 20px;
+        }
+
+        strong {
+            color: #667eea;
+        }
+
+        .two-columns {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 30px;
+            margin: 20px 0;
+        }
+
+        @media (max-width: 768px) {
+            .slide {
+                padding: 30px;
+            }
+            h1 {
+                font-size: 2em;
+            }
+            h2 {
+                font-size: 1.8em;
+            }
+            .two-columns {
+                grid-template-columns: 1fr;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="presentation">
+        <!-- Slide 1: Titre -->
+        <div class="slide active">
+            <div class="center-content">
+                <h1>🤖 L'Intelligence Artificielle</h1>
+                <p class="subtitle">Guide Pratique : Comprendre, Choisir et Utiliser l'IA</p>
+                <div style="margin-top: 50px;">
+                    <p style="font-size: 1.5em;"><strong>4 parties essentielles :</strong></p>
+                    <p>1️⃣ Qu'est-ce que l'IA ?</p>
+                    <p>2️⃣ Comment choisir la bonne IA ?</p>
+                    <p>3️⃣ Comment créer des prompts efficaces ?</p>
+                    <p>4️⃣ Cas pratiques avec Claude Code</p>
+                </div>
+            </div>
+            <div class="slide-number">1 / 13</div>
+        </div>
+
+        <!-- Slide 2: Qu'est-ce que l'IA - Introduction -->
+        <div class="slide">
+            <div class="slide-header">
+                <h2>1️⃣ Qu'est-ce que l'IA ?</h2>
+            </div>
+            <p><strong>L'Intelligence Artificielle</strong> désigne des systèmes informatiques capables d'effectuer des tâches qui nécessitent normalement l'intelligence humaine.</p>
+            
+            <div class="box">
+                <h3>🎯 Objectif de l'IA</h3>
+                <p>Permettre aux machines de <span class="highlight">comprendre, apprendre, raisonner et interagir</span> de manière autonome ou assistée.</p>
+            </div>
+
+            <h3>Types d'IA selon la capacité :</h3>
+            <ul>
+                <li><strong>IA faible (narrow AI)</strong> : spécialisée dans une tâche précise (ex: reconnaissance vocale, recommandation)</li>
+                <li><strong>IA généraliste</strong> : capable de réaliser plusieurs tâches différentes (ex: LLMs comme GPT, Claude)</li>
+                <li><strong>IA forte</strong> : hypothétique, équivalente à l'intelligence humaine complète</li>
+            </ul>
+            <div class="slide-number">2 / 13</div>
+        </div>
+
+        <!-- Slide 3: Grandes familles d'IA - Partie 1 -->
+        <div class="slide">
+            <div class="slide-header">
+                <h2>Les grandes familles d'IA (1/2)</h2>
+            </div>
+            
+            <div class="grid">
+                <div class="card">
+                    <h4>🗣️ LLMs</h4>
+                    <p>Modèles de langage (GPT, Claude, LLaMA) pour rédaction, code, analyse</p>
+                </div>
+                <div class="card">
+                    <h4>🤖 Agents conversationnels</h4>
+                    <p>Assistants orchestrant LLMs + outils pour automatisation</p>
+                </div>
+                <div class="card">
+                    <h4>🎨 Génération d'images</h4>
+                    <p>DALL·E, Midjourney, Stable Diffusion pour création visuelle</p>
+                </div>
+                <div class="card">
+                    <h4>👁️ Vision par ordinateur</h4>
+                    <p>Détection, classification, segmentation d'images</p>
+                </div>
+                <div class="card">
+                    <h4>🎤 Speech (ASR/TTS)</h4>
+                    <p>Transcription audio ↔ texte (Whisper, Google Speech)</p>
+                </div>
+                <div class="card">
+                    <h4>🔍 Recherche sémantique</h4>
+                    <p>Embeddings vectoriels pour recherche avancée</p>
+                </div>
+            </div>
+            <div class="slide-number">3 / 13</div>
+        </div>
+
+        <!-- Slide 4: Grandes familles d'IA - Partie 2 -->
+        <div class="slide">
+            <div class="slide-header">
+                <h2>Les grandes familles d'IA (2/2)</h2>
+            </div>
+            
+            <div class="grid">
+                <div class="card">
+                    <h4>⭐ Recommandation</h4>
+                    <p>Systèmes de suggestion (e-commerce, médias)</p>
+                </div>
+                <div class="card">
+                    <h4>🤖 RPA</h4>
+                    <p>Automatisation de tâches répétitives (UiPath, Automation Anywhere)</p>
+                </div>
+                <div class="card">
+                    <h4>⚙️ AutoML/MLOps</h4>
+                    <p>Plateformes d'automatisation ML (Vertex AI, H2O)</p>
+                </div>
+                <div class="card">
+                    <h4>📱 Edge AI</h4>
+                    <p>IA embarquée locale (IoT, smartphones)</p>
+                </div>
+                <div class="card">
+                    <h4>🦾 IA robotique</h4>
+                    <p>Apprentissage par renforcement, planification</p>
+                </div>
+                <div class="card">
+                    <h4>⚕️ IA spécialisées</h4>
+                    <p>Santé, juridique, finance (domaines réglementés)</p>
+                </div>
+            </div>
+            <div class="slide-number">4 / 13</div>
+        </div>
+
+        <!-- Slide 5: Comment choisir - Introduction -->
+        <div class="slide">
+            <div class="slide-header">
+                <h2>2️⃣ Comment choisir la bonne IA ?</h2>
+            </div>
+            
+            <p>Le choix d'une IA dépend de <strong>6 critères essentiels</strong> :</p>
+
+            <div class="box">
+                <h3>✅ Checklist de sélection</h3>
+                <ul>
+                    <li><strong>📊 Données</strong> : volume disponible, sensibilité, besoin d'annotations</li>
+                    <li><strong>⚡ Latence</strong> : besoin de temps réel ou traitement batch acceptable</li>
+                    <li><strong>💰 Coût</strong> : infrastructure, API, licences</li>
+                    <li><strong>🔐 Contrôle</strong> : cloud public vs on-premise vs hybride</li>
+                    <li><strong>📋 Explicabilité</strong> : contraintes réglementaires (RGPD, IA Act)</li>
+                    <li><strong>🔧 Maintenance</strong> : mises à jour, monitoring de la dérive</li>
+                </ul>
+            </div>
+            <div class="slide-number">5 / 13</div>
+        </div>
+
+        <!-- Slide 6: Matrice de décision -->
+        <div class="slide">
+            <div class="slide-header">
+                <h2>Matrice de décision par usage</h2>
+            </div>
+
+            <div class="two-columns">
+                <div>
+                    <div class="box">
+                        <h3>📝 Rédaction & Synthèse</h3>
+                        <p><strong>→ LLMs</strong> (GPT, Claude)</p>
+                        <p style="font-size: 0.9em;">E-mails, rapports, résumés</p>
+                    </div>
+                    <div class="box">
+                        <h3>🎨 Création visuelle</h3>
+                        <p><strong>→ Diffusion models</strong></p>
+                        <p style="font-size: 0.9em;">DALL·E, Midjourney, Stable Diffusion</p>
+                    </div>
+                    <div class="box">
+                        <h3>🗣️ Transcription audio</h3>
+                        <p><strong>→ ASR</strong> (Whisper)</p>
+                        <p style="font-size: 0.9em;">Réunions, interviews, sous-titres</p>
+                    </div>
+                </div>
+                <div>
+                    <div class="box">
+                        <h3>🔍 Recherche documentaire</h3>
+                        <p><strong>→ Embeddings + RAG</strong></p>
+                        <p style="font-size: 0.9em;">Recherche sémantique avancée</p>
+                    </div>
+                    <div class="box">
+                        <h3>🤖 Automatisation back-office</h3>
+                        <p><strong>→ RPA + LLM</strong></p>
+                        <p style="font-size: 0.9em;">Saisie, rapprochement, extraction</p>
+                    </div>
+                    <div class="box">
+                        <h3>💻 Génération de code</h3>
+                        <p><strong>→ LLM code-specialized</strong></p>
+                        <p style="font-size: 0.9em;">Claude, Copilot, Codex</p>
+                    </div>
+                </div>
+            </div>
+            <div class="slide-number">6 / 13</div>
+        </div>
+
+        <!-- Slide 7: Prompts - Introduction -->
+        <div class="slide">
+            <div class="slide-header">
+                <h2>3️⃣ Comment utiliser l'IA : Les Prompts</h2>
+            </div>
+
+            <p><strong>Un prompt</strong> est l'instruction donnée à une IA pour obtenir un résultat précis.</p>
+
+            <div class="prompt-formula">
+                <h4>📐 Formule P.R.O.M.P.T. (Principe universel)</h4>
+                <ul style="margin-left: 0; list-style: none;">
+                    <li><strong>P</strong>ersona → Qui doit être l'agent (ex: "Tu es un expert juridique")</li>
+                    <li><strong>R</strong>ésultat attendu → Format précis (JSON, 3 options, email...)</li>
+                    <li><strong>O</strong>rigin/Contexte → Données, historique, contraintes métier</li>
+                    <li><strong>M</strong>éthode/Contraintes → Style, longueur, ton, étapes</li>
+                    <li><strong>P</strong>reuves/Exemples → 1-3 exemples input → output</li>
+                    <li><strong>T</strong>ests & Critères → Comment vérifier le résultat</li>
+                </ul>
+            </div>
+
+            <p style="margin-top: 20px; font-style: italic;">💡 Plus le prompt est précis, meilleur sera le résultat !</p>
+            <div class="slide-number">7 / 13</div>
+        </div>
+
+        <!-- Slide 8: Exemples de prompts -->
+        <div class="slide">
+            <div class="slide-header">
+                <h2>Exemples : Mauvais vs Bon prompt</h2>
+            </div>
+
+            <h3>❌ Mauvais exemple</h3>
+            <div class="example-box bad-example">
+                <p><em>"Résume ce texte."</em></p>
+                <p style="font-size: 0.9em;">→ Trop vague, pas de contraintes, format inconnu</p>
+            </div>
+
+            <h3>✅ Bon exemple</h3>
+            <div class="example-box">
+                <p><em>"Tu es un rédacteur professionnel. Résume le texte ci-dessous en <strong>4 phrases maximum</strong>, en conservant les <strong>chiffres et noms propres</strong>. Ne change pas le sens. Style : <strong>neutre, clair</strong>. Sortie : 4 phrases séparées par des sauts de ligne."</em></p>
+                <p style="font-size: 0.9em; margin-top: 10px;">→ Persona ✓ Format ✓ Contraintes ✓ Style ✓</p>
+            </div>
+
+            <div class="box" style="margin-top: 20px;">
+                <p><strong>Astuce :</strong> Utilisez des exemples concrets (few-shot learning) pour enseigner le format attendu à l'IA.</p>
+            </div>
+            <div class="slide-number">8 / 13</div>
+        </div>
+
+        <!-- Slide 9: Template prêt à l'emploi -->
+        <div class="slide">
+            <div class="slide-header">
+                <h2>Template de prompt universel</h2>
+            </div>
+
+            <div class="example-box">
+                <h4>📋 Template simple (copier-coller)</h4>
+                <pre style="background: white; padding: 15px; border-radius: 8px; overflow-x: auto; font-size: 0.95em;">
+Tu es un assistant expert en [domaine]. 
+
+Objectif : [ce que tu veux obtenir]
+
+Contrainte : 
+- Longueur : [ex: 50-80 mots]
+- Ton : [formel/casual/persuasif]
+- Éléments à inclure : [liste]
+- Éléments à exclure : [liste]
+
+Sortie : [format exact - ex: 3 points numérotés]
+
+Contexte : [données brutes / résumé]
+
+Si incertain, demande 1 question de clarification.
+                </pre>
+            </div>
+
+            <p style="margin-top: 20px;"><strong>💡 Conseil :</strong> Adaptez ce template à chaque usage spécifique en remplissant chaque section.</p>
+            <div class="slide-number">9 / 13</div>
+        </div>
+
+        <!-- Slide 10: Cas pratique - Intro -->
+        <div class="slide">
+            <div class="slide-header">
+                <h2>4️⃣ Cas pratiques d'IA</h2>
+            </div>
+
+            <h3>Deux approches complémentaires :</h3>
+
+            <div class="two-columns">
+                <div class="box">
+                    <h3>🌐 IA en ligne (Cloud)</h3>
+                    <ul>
+                        <li>GPT-4, Claude via API</li>
+                        <li>Puissance de calcul élevée</li>
+                        <li>Toujours à jour</li>
+                        <li>Coûts par utilisation</li>
+                        <li>Connexion requise</li>
+                    </ul>
+                    <p><strong>Idéal pour :</strong> tâches complexes, gros volumes</p>
+                </div>
+
+                <div class="box">
+                    <h3>💻 IA locale (On-premise)</h3>
+                    <ul>
+                        <li>LLaMA, Mistral, Phi</li>
+                        <li>Confidentialité totale</li>
+                        <li>Pas de coûts récurrents</li>
+                        <li>Fonctionne hors-ligne</li>
+                        <li>Nécessite GPU/RAM</li>
+                    </ul>
+                    <p><strong>Idéal pour :</strong> données sensibles, autonomie</p>
+                </div>
+            </div>
+            <div class="slide-number">10 / 13</div>
+        </div>
+
+        <!-- Slide 11: Claude Code -->
+        <div class="slide">
+            <div class="slide-header">
+                <h2>Focus : Claude Code 🚀</h2>
+            </div>
+
+            <div class="box">
+                <h3>Qu'est-ce que Claude Code ?</h3>
+                <p>Un <strong>outil en ligne de commande</strong> qui permet de déléguer des tâches de développement à Claude directement depuis le terminal.</p>
+            </div>
+
+            <h3>✨ Fonctionnalités principales :</h3>
+            <ul>
+                <li><strong>Génération de code</strong> : créer des fonctions, scripts, applications complètes</li>
+                <li><strong>Debugging assisté</strong> : analyser et corriger les erreurs</li>
+                <li><strong>Refactoring</strong> : améliorer la qualité et la structure du code</li>
+                <li><strong>Documentation</strong> : générer des commentaires et docs automatiquement</li>
+                <li><strong>Tests unitaires</strong> : créer des suites de tests</li>
+            </ul>
+
+            <div class="example-box" style="margin-top: 20px;">
+                <p><strong>Exemple d'usage :</strong></p>
+                <p style="font-family: monospace; font-size: 0.9em;">$ claude-code "Crée une API REST en Python avec FastAPI pour gérer une base de contacts"</p>
+            </div>
+            <div class="slide-number">11 / 13</div>
+        </div>
+
+        <!-- Slide 12: Démo pratique -->
+        <div class="slide">
+            <div class="slide-header">
+                <h2>Cas d'usage concrets</h2>
+            </div>
+
+            <div class="grid">
+                <div class="card">
+                    <h4>📧 Automatisation emails</h4>
+                    <p>LLM local + script Python pour réponses automatiques personnalisées</p>
+                </div>
+                <div class="card">
+                    <h4>📊 Analyse de données</h4>
+                    <p>Claude Code pour générer scripts d'analyse et visualisations</p>
+                </div>
+                <div class="card">
+                    <h4>🔍 Recherche documentaire</h4>
+                    <p>Embeddings locaux + base vectorielle (ChromaDB, FAISS)</p>
+                </div>
+                <div class="card">
+                    <h4>💬 Chatbot entreprise</h4>
+                    <p>LLaMA/Mistral en local + RAG sur docs internes</p>
+                </div>
+                <div class="card">
+                    <h4>🎨 Génération de contenu</h4>
+                    <p>Stable Diffusion local pour création d'images sans cloud</p>
+                </div>
+                <div class="card">
+                    <h4>⚙️ DevOps assisté</h4>
+                    <p>Claude Code pour scripts d'automatisation CI/CD</p>
+                </div>
+            </div>
+
+            <div class="box" style="margin-top: 20px;">
+                <p><strong>🔑 Conseil :</strong> Commencez par un pilote (POC) de 1-2 mois sur un cas simple avant d'industrialiser.</p>
+            </div>
+            <div class="slide-number">12 / 13</div>
+        </div>
+
+        <!-- Slide 13: Conclusion -->
+        <div class="slide">
+            <div class="slide-header">
+                <h2>🎯 Conclusion</h2>
+            </div>
+
+            <div class="box">
+                <h3>Les points clés à retenir :</h3>
+                <ul>
+                    <li>L'IA couvre <strong>12 grandes familles</strong> pour des usages variés</li>
+                    <li>Le choix repose sur <strong>6 critères</strong> : données, latence, coût, contrôle, explicabilité, maintenance</li>
+                    <li>Un bon prompt suit la formule <strong>P.R.O.M.P.T.</strong> pour maximiser la qualité</li>
+                    <li><strong>IA locale + Claude Code</strong> permettent autonomie et confidentialité</li>
+                </ul>
+            </div>
+
+            <p style="text-align: center; margin-top: 30px; font-size: 1.5em; color: #667eea;"><strong>Merci ! Questions ? 💬</strong></p>
+            <div class="slide-number">13 / 13</div>
+        </div>
+    </div>
+
+    <div class="navigation">
+        <button id="prevBtn" onclick="changeSlide(-1)">◀ Précédent</button>
+        <button id="nextBtn" onclick="changeSlide(1)">Suivant ▶</button>
+    </div>
+
+    <script>
+        let currentSlide = 0;
+        const slides = document.querySelectorAll('.slide');
+        const totalSlides = slides.length;
+
+        function showSlide(n) {
+            slides.forEach(slide => slide.classList.remove('active'));
+            
+            if (n >= totalSlides) {
+                currentSlide = totalSlides - 1;
+            } else if (n < 0) {
+                currentSlide = 0;
+            } else {
+                currentSlide = n;
+            }
+            
+            slides[currentSlide].classList.add('active');
+            
+            // Update button states
+            document.getElementById('prevBtn').disabled = currentSlide === 0;
+            document.getElementById('nextBtn').disabled = currentSlide === totalSlides - 1;
+        }
+
+        function changeSlide(direction) {
+            showSlide(currentSlide + direction);
+        }
+
+        // Keyboard navigation
+        document.addEventListener('keydown', (e) => {
+            if (e.key === 'ArrowLeft') changeSlide(-1);
+            if (e.key === 'ArrowRight') changeSlide(1);
+        });
+
+        // Initialize
+        showSlide(0);
+    </script>
+</body>
+</html>
