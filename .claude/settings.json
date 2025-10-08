@@ -1,0 +1,63 @@
+{
+  "permissions": {
+    "allow": [
+      "Edit",
+      "Bash(npm run :*)",
+      "Bash(git :*)",
+      "Bash(pnpm :*)",
+      "Bash(gh :*)",
+      "Bash(cd :*)",
+      "Bash(ls :*)",
+      "Bash(node :*)",
+      "Bash(mkdir:*)",
+      "Bash(npm init:*)",
+      "Bash(npm install:*)",
+      "Bash(node:*)",
+      "Bash(npm --version)",
+      "Bash(docker:*)",
+      "Bash(test:*)",
+      "Bash(cat:*)",
+      "Bash(npm run build:*)"
+    ]
+  },
+  "statusLine": {
+    "type": "command",
+    "command": "bash /Users/david/.claude/statusline-ccusage.sh",
+    "padding": 0
+  },
+  "hooks": {
+    "PreToolUse": [
+      {
+        "matcher": "Bash",
+        "hooks": [
+          {
+            "type": "command",
+            "command": "bun /Users/david/.claude/scripts/validate-command.js"
+          }
+        ]
+      }
+    ],
+    "Stop": [
+      {
+        "matcher": "",
+        "hooks": [
+          {
+            "type": "command",
+            "command": "afplay /Users/david/.claude/song/finish.mp3"
+          }
+        ]
+      }
+    ],
+    "Notification": [
+      {
+        "matcher": "",
+        "hooks": [
+          {
+            "type": "command",
+            "command": "afplay /Users/david/.claude/song/need-human.mp3"
+          }
+        ]
+      }
+    ]
+  }
+}
